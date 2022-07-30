@@ -18,45 +18,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DouYinOpenApi douYinOpenApi;
     public static int flags = 0;
     public static TextView tv_username;
+    String url = "https://open.douyin.com/oauth/userinfo/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         douYinOpenApi = DouYinOpenApiFactory.create(this);
-
-        findViewById(R.id.btn_white).setOnClickListener(this);
+        getToken();
         findViewById(R.id.btn_userinfo).setOnClickListener(this);
-
         tv_username = findViewById(R.id.tv_username);
-        findViewById(R.id.btn_u).setOnClickListener(this);
-
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_white:
-                getToken();
-                break;
             case R.id.btn_userinfo:
                 getUserInfo();
                 break;
-            case R.id.btn_u:
-                tv_username.setText(HttpTest.userMessage.getData().getNickname());
         }
     }
 
-    public boolean getUserInfo(){
-        Authorization.Request request = new Authorization.Request();
-        request.scope = "user_info";
-        request.callerLocalEntry = "com.qxy.GenshinImpact.douyinapi.UserInfo";
-        return douYinOpenApi.authorize(request);
+    public void getUserInfo(){
+//        Authorization.Request request = new Authorization.Request();
+//        request.scope = "user_info";
+//        request.callerLocalEntry = "com.qxy.GenshinImpact.douyinapi.UserInfo";
+//        return douYinOpenApi.authorize(request);
+        HttpTest httpTest = new HttpTest();
+
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                System.out.println("------------getuserinfo------------");
+                httpTest.getUserInfo(url);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.tv_username.setText(HttpTest.userMessage.getData().getNickname());
+                    }
+                });
+            }
+        }).start();
     }
 
     public boolean getToken(){
         Authorization.Request request = new Authorization.Request();
-        request.scope = "user_info";
+        request.scope = "trial.whitelist,user_info";
         return douYinOpenApi.authorize(request);
     }
 
