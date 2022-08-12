@@ -22,5 +22,14 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+buildscript{
+    repositories{
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.bytedance.btrace:rhea-gradle-plugin:1.0.1'
+    }
+}
 rootProject.name = "demo02"
 include ':app'

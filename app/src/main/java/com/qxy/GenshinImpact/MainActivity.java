@@ -39,10 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void getUserInfo(){
-//        Authorization.Request request = new Authorization.Request();
-//        request.scope = "user_info";
-//        request.callerLocalEntry = "com.qxy.GenshinImpact.douyinapi.UserInfo";
-//        return douYinOpenApi.authorize(request);
         HttpTest httpTest = new HttpTest();
 
         new Thread(new Runnable(){
@@ -65,6 +61,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         request.scope = "trial.whitelist,user_info";
         return douYinOpenApi.authorize(request);
     }
-
 
 }
